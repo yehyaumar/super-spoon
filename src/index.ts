@@ -9,7 +9,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-mongoose.connect(url, { useNewUrlParser: true });
+mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true});
 const db = mongoose.connection;
 
 db.once('open', _ => {

@@ -58,8 +58,8 @@ const comparePassword: comparePasswordFunction = function (candidatePassword, cb
 UserSchema.methods.comparePassword = comparePassword;
 
 UserSchema.methods.cleanedUser = function() {
-  console.log("[USERMODEL]",this.username)
   return {
+    id: this._id,
     username: this.username,
     email: this.email,
     createdAt: this.createdAt
