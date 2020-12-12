@@ -39,6 +39,33 @@ export const register = async (req: Request, res: Response, next: NextFunction):
   }
 }
 
+export const login = async (req: Request, res: Response, next: NextFunction) => {
+  const { username, password } = req.body;
+  if(!username || !password ){
+    res.status(400).json(new FormatResponse(false, "Invalid username or password"));
+  }
+
+  try{
+    const user = await User.findOne({username} );
+    if (user && await user.isValidPassword(password)) {
+      const token = user.generateJWT();
+      res.status(200).json(new FormatResponse(true, "Logged in successfully", user.userWithToken(token)))
+    } else {
+      res.status(400).json(new FormatResponse(false, "Invalid username or password"));
+    }
+  }catch(err){
+    console.log("LoginController", err)
+    res.status(500).json(new FormatResponse(false, "Internal Server Error"));
+    return;
+  }
+}
+
+export const profile = async (req: Request, res: Response, next: NextFunction) => {
+  
+  console.log("PROFILE", req.user)
+  res.json(req.user)
+}
+
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   const users = await User.find()
   const cleanedUsers = [];

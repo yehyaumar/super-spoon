@@ -3,3 +3,4 @@ dist
 src/practise_js
 
 house_keeping_code.ts
+.env
